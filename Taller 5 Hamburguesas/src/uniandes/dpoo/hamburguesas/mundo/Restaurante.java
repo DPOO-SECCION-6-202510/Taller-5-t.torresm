@@ -101,8 +101,26 @@ public class Restaurante
         if (pedidoEnCurso == null)
             throw new NoHayPedidoEnCursoException();
 
+        // Verificar y crear la carpeta de facturas si no existe
+        File carpetaFacturas = new File(CARPETA_FACTURAS);
+        if (!carpetaFacturas.exists()) {
+            carpetaFacturas.mkdirs();  // Crea la carpeta si no existe
+        }
+
+        // Crear el archivo para la factura con el nombre basado en el ID del pedido
         String nombreArchivo = PREFIJO_FACTURAS + pedidoEnCurso.getIdPedido() + ".txt";
-        pedidoEnCurso.guardarFactura(new File(CARPETA_FACTURAS + nombreArchivo));
+        File archivoFactura = new File(CARPETA_FACTURAS + nombreArchivo);
+
+        // Llamar al método guardarFactura que ya está implementado en Pedido
+        pedidoEnCurso.guardarFactura(archivoFactura);
+
+        // Agregar el pedido a la lista de pedidos cerrados
+        pedidos.add(pedidoEnCurso);
+
+        // Mensaje de confirmación de que el pedido fue guardado
+        System.out.println("Pedido " + pedidoEnCurso.getIdPedido() + " cerrado y factura guardada como " + nombreArchivo);
+
+        // Finaliza el pedido
         pedidoEnCurso = null;
     }
 
