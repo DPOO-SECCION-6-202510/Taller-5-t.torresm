@@ -28,15 +28,15 @@ public class Combo implements Producto
      * @param descuento El descuento sobre el valor normal de los productos en el combo
      * @param items Los productos que hacen parte del combo
      */
-    public Combo( String nombre, double descuento, ArrayList<ProductoMenu> items )
+    public Combo(String nombre, double descuento, ArrayList<ProductoMenu> items)
     {
-        this.itemsCombo = new ArrayList<>( items );
+        this.itemsCombo = new ArrayList<>(items);
         this.nombreCombo = nombre;
         this.descuento = descuento;
     }
 
     @Override
-    public String getNombre( )
+    public String getNombre()
     {
         return nombreCombo;
     }
@@ -47,15 +47,16 @@ public class Combo implements Producto
      * El precio está basado en aplicarle el descuento del combo al valor de cada uno de los productos.
      */
     @Override
-    public int getPrecio( )
+    public int getPrecio()
     {
         double precio = 0;
-        for( Producto i : itemsCombo )
+        for (ProductoMenu i : itemsCombo)
         {
-            precio += i.getPrecio( );
+            precio += i.getPrecio();
         }
 
-        return ( int ) ( precio * descuento );
+        // Aplicar descuento
+        return (int) (precio * (1 - descuento));
     }
 
     /**
@@ -64,14 +65,13 @@ public class Combo implements Producto
      * El texto incluye el nombre del combo, su costo y el valor del descuento
      */
     @Override
-    public String generarTextoFactura( )
+    public String generarTextoFactura()
     {
-        StringBuffer sb = new StringBuffer( );
-        sb.append( "Combo " + nombreCombo + "\n" );
-        sb.append( " Descuento: " + descuento + "\n" );
-        sb.append( "            " + getPrecio( ) + "\n" );
+        StringBuilder sb = new StringBuilder();
+        sb.append("Combo ").append(nombreCombo).append("\n");
+        sb.append(" Descuento: ").append(descuento * 100).append("%\n");
+        sb.append("            ").append(getPrecio()).append("\n");
 
-        return sb.toString( );
+        return sb.toString();
     }
-
 }

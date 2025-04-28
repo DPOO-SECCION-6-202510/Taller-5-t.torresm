@@ -47,19 +47,19 @@ public class Pedido
      * @param nombreCliente
      * @param direccionCliente
      */
-    public Pedido( String nombreCliente, String direccionCliente )
+    public Pedido(String nombreCliente, String direccionCliente)
     {
         this.idPedido = numeroPedidos++;
         this.nombreCliente = nombreCliente;
         this.direccionCliente = direccionCliente;
-        productos = new ArrayList<Producto>( );
+        productos = new ArrayList<>();
     }
 
     /**
      * Retorna el identificador del pedido
      * @return
      */
-    public int getIdPedido( )
+    public int getIdPedido()
     {
         return idPedido;
     }
@@ -68,7 +68,7 @@ public class Pedido
      * Retorna el nombre del cliente
      * @return
      */
-    public String getNombreCliente( )
+    public String getNombreCliente()
     {
         return nombreCliente;
     }
@@ -77,30 +77,30 @@ public class Pedido
      * Agrega un nuevo producto al pedido
      * @param nuevoProducto El producto que debe agregarse al pedido
      */
-    public void agregarProducto( Producto nuevoProducto )
+    public void agregarProducto(Producto nuevoProducto)
     {
-        productos.add( nuevoProducto );
+        productos.add(nuevoProducto);
     }
 
     /**
      * Retorna el precio total del pedido, basado en el valor de cada uno de los productos y en el IVA
      * @return La sumatoria de los precios de los productos con el valor adicional del IVA
      */
-    public int getPrecioTotalPedido( )
+    public int getPrecioTotalPedido()
     {
-        return getPrecioNetoPedido( ) + getPrecioIVAPedido( );
+        return getPrecioNetoPedido() + getPrecioIVAPedido();
     }
 
     /**
      * Retorna el precio de los productos del pedido
      * @return La sumatoria de los precios de los productos
      */
-    private int getPrecioNetoPedido( )
+    private int getPrecioNetoPedido()
     {
         int valor = 0;
-        for( Producto item : productos )
+        for (Producto item : productos)
         {
-            valor += item.getPrecio( );
+            valor += item.getPrecio();
         }
         return valor;
     }
@@ -109,9 +109,9 @@ public class Pedido
      * Retorna el valor del IVA del producto, que corresponde al 19% del precio neto
      * @return
      */
-    private int getPrecioIVAPedido( )
+    private int getPrecioIVAPedido()
     {
-        return ( int ) ( getPrecioNetoPedido( ) * IVA );
+        return (int) (getPrecioNetoPedido() * IVA);
     }
 
     /**
@@ -128,25 +128,25 @@ public class Pedido
      * 5. El valor total del pedido
      * @return
      */
-    public String generarTextoFactura( )
+    public String generarTextoFactura()
     {
-        StringBuffer sb = new StringBuffer( );
+        StringBuilder sb = new StringBuilder();
 
-        sb.append( "Cliente: " + nombreCliente + "\n" );
-        sb.append( "Dirección: " + direccionCliente + "\n" );
-        sb.append( "----------------\n" );
+        sb.append("Cliente: ").append(nombreCliente).append("\n");
+        sb.append("Dirección: ").append(direccionCliente).append("\n");
+        sb.append("----------------\n");
 
-        for( Producto item : productos )
+        for (Producto item : productos)
         {
-            sb.append( item.generarTextoFactura( ) );
+            sb.append(item.generarTextoFactura());
         }
 
-        sb.append( "----------------\n" );
-        sb.append( "Precio Neto:  " + getPrecioNetoPedido( ) + "\n" );
-        sb.append( "IVA:          " + getPrecioIVAPedido( ) + "\n" );
-        sb.append( "Precio Total: " + getPrecioTotalPedido( ) + "\n" );
+        sb.append("----------------\n");
+        sb.append("Precio Neto:  ").append(getPrecioNetoPedido()).append("\n");
+        sb.append("IVA:          ").append(getPrecioIVAPedido()).append("\n");
+        sb.append("Precio Total: ").append(getPrecioTotalPedido()).append("\n");
 
-        return sb.toString( );
+        return sb.toString();
     }
 
     /**
@@ -154,14 +154,12 @@ public class Pedido
      * @param archivo El archivo donde debe quedar almacenada la factua del pedido
      * @throws FileNotFoundException Se lanza esta excepción si no se puede crear el archivo para guardar la factura
      */
-    public void guardarFactura( File archivo ) throws FileNotFoundException
+    public void guardarFactura(File archivo) throws FileNotFoundException
     {
-        String factura = generarTextoFactura( );
+        String factura = generarTextoFactura();
 
-        PrintWriter out;
-        out = new PrintWriter( archivo );
-        out.print( factura );
-        out.close( );
+        PrintWriter out = new PrintWriter(archivo);
+        out.print(factura);
+        out.close();
     }
-
 }

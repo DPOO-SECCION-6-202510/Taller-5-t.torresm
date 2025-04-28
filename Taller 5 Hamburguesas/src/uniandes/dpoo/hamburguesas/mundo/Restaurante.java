@@ -60,12 +60,12 @@ public class Restaurante
     /**
      * Crea un restaurante vacío, sin pedidos, ingredientes, ni ítems en el menú
      */
-    public Restaurante( )
+    public Restaurante()
     {
-        pedidos = new ArrayList<Pedido>( );
-        ingredientes = new ArrayList<Ingrediente>( );
-        menuBase = new ArrayList<ProductoMenu>( );
-        menuCombos = new ArrayList<Combo>( );
+        pedidos = new ArrayList<>();
+        ingredientes = new ArrayList<>();
+        menuBase = new ArrayList<>();
+        menuCombos = new ArrayList<>();
     }
 
     // ***************************************
@@ -79,12 +79,12 @@ public class Restaurante
      * @param direccionCliente La dirección del cliente
      * @throws YaHayUnPedidoEnCursoException Se lanza esta excepción si ya había un pedido en curso cuando se llamó a este método
      */
-    public void iniciarPedido( String nombreCliente, String direccionCliente ) throws YaHayUnPedidoEnCursoException
+    public void iniciarPedido(String nombreCliente, String direccionCliente) throws YaHayUnPedidoEnCursoException
     {
-        if( pedidoEnCurso != null )
-            throw new YaHayUnPedidoEnCursoException( pedidoEnCurso.getNombreCliente( ), nombreCliente );
+        if (pedidoEnCurso != null)
+            throw new YaHayUnPedidoEnCursoException(pedidoEnCurso.getNombreCliente(), nombreCliente);
 
-        pedidoEnCurso = new Pedido( nombreCliente, direccionCliente );
+        pedidoEnCurso = new Pedido(nombreCliente, direccionCliente);
     }
 
     /**
@@ -96,13 +96,13 @@ public class Restaurante
      * @throws NoHayPedidoEnCursoException Lanza esta excepción si no hay un pedido en curso
      * @throws FileNotFoundException Lanza esta excepción si hay problemas guardando el archivo
      */
-    public void cerrarYGuardarPedido( ) throws NoHayPedidoEnCursoException, IOException
+    public void cerrarYGuardarPedido() throws NoHayPedidoEnCursoException, IOException
     {
-        if( pedidoEnCurso == null )
-            throw new NoHayPedidoEnCursoException( );
+        if (pedidoEnCurso == null)
+            throw new NoHayPedidoEnCursoException();
 
-        String nombreArchivo = PREFIJO_FACTURAS + pedidoEnCurso.getIdPedido( ) + ".txt";
-        pedidoEnCurso.guardarFactura( new File( CARPETA_FACTURAS + nombreArchivo ) );
+        String nombreArchivo = PREFIJO_FACTURAS + pedidoEnCurso.getIdPedido() + ".txt";
+        pedidoEnCurso.guardarFactura(new File(CARPETA_FACTURAS + nombreArchivo));
         pedidoEnCurso = null;
     }
 
@@ -111,7 +111,7 @@ public class Restaurante
      * 
      * @return El pedido en curso o null
      */
-    public Pedido getPedidoEnCurso( )
+    public Pedido getPedidoEnCurso()
     {
         return pedidoEnCurso;
     }
@@ -121,7 +121,7 @@ public class Restaurante
      * 
      * @return La lista de pedidos cerrados
      */
-    public ArrayList<Pedido> getPedidos( )
+    public ArrayList<Pedido> getPedidos()
     {
         return pedidos;
     }
@@ -131,7 +131,7 @@ public class Restaurante
      * 
      * @return
      */
-    public ArrayList<ProductoMenu> getMenuBase( )
+    public ArrayList<ProductoMenu> getMenuBase()
     {
         return menuBase;
     }
@@ -141,7 +141,7 @@ public class Restaurante
      * 
      * @return
      */
-    public ArrayList<Combo> getMenuCombos( )
+    public ArrayList<Combo> getMenuCombos()
     {
         return menuCombos;
     }
@@ -151,7 +151,7 @@ public class Restaurante
      * 
      * @return
      */
-    public ArrayList<Ingrediente> getIngredientes( )
+    public ArrayList<Ingrediente> getIngredientes()
     {
         return ingredientes;
     }
@@ -165,149 +165,121 @@ public class Restaurante
      * @throws IOException
      * @throws NumberFormatException
      */
-    public void cargarInformacionRestaurante( File archivoIngredientes, File archivoMenu, File archivoCombos ) throws HamburguesaException, NumberFormatException, IOException
+    public void cargarInformacionRestaurante(File archivoIngredientes, File archivoMenu, File archivoCombos) throws HamburguesaException, NumberFormatException, IOException
     {
-        cargarIngredientes( archivoIngredientes );
-        cargarMenu( archivoMenu );
-        cargarCombos( archivoCombos );
+        cargarIngredientes(archivoIngredientes);
+        cargarMenu(archivoMenu);
+        cargarCombos(archivoCombos);
     }
 
-    private void cargarIngredientes( File archivoIngredientes ) throws IngredienteRepetidoException, IOException
+    private void cargarIngredientes(File archivoIngredientes) throws IngredienteRepetidoException, IOException
     {
-        BufferedReader reader = new BufferedReader( new java.io.FileReader( archivoIngredientes ) );
-        try
+        try (BufferedReader reader = new BufferedReader(new java.io.FileReader(archivoIngredientes)))
         {
-            String linea = reader.readLine( );
-            while( linea != null )
+            String linea = reader.readLine();
+            while (linea != null)
             {
-                if( !linea.isEmpty( ) )
+                if (!linea.isEmpty())
                 {
-                    String[] ingredientesStr = linea.split( ";" );
-                    String nombreIngrediente = ingredientesStr[ 0 ];
-                    int costoIngrediente = Integer.parseInt( ingredientesStr[ 1 ] );
-                    Ingrediente ingrediente = new Ingrediente( nombreIngrediente, costoIngrediente );
+                    String[] ingredientesStr = linea.split(";");
+                    String nombreIngrediente = ingredientesStr[0];
+                    int costoIngrediente = Integer.parseInt(ingredientesStr[1]);
+                    Ingrediente ingrediente = new Ingrediente(nombreIngrediente, costoIngrediente);
 
-                    for( Ingrediente i : this.ingredientes )
+                    for (Ingrediente i : this.ingredientes)
                     {
-                        if( i.getNombre( ).equals( nombreIngrediente ) )
+                        if (i.getNombre().equals(nombreIngrediente))
                         {
-                            throw new IngredienteRepetidoException( nombreIngrediente );
+                            throw new IngredienteRepetidoException(nombreIngrediente);
                         }
                     }
-                    this.ingredientes.add( ingrediente );
+                    this.ingredientes.add(ingrediente);
                 }
-                linea = reader.readLine( );
+                linea = reader.readLine();
             }
         }
-        catch( Exception e )
-        {
-            throw e;
-        }
-        finally
-        {
-            reader.close( );
-        }
     }
 
-    private void cargarMenu( File archivoMenu ) throws ProductoRepetidoException, IOException
+    private void cargarMenu(File archivoMenu) throws ProductoRepetidoException, IOException
     {
-        BufferedReader reader = new BufferedReader( new java.io.FileReader( archivoMenu ) );
-        try
+        try (BufferedReader reader = new BufferedReader(new java.io.FileReader(archivoMenu)))
         {
-            String linea = reader.readLine( );
-            while( linea != null )
+            String linea = reader.readLine();
+            while (linea != null)
             {
-                if( !linea.isEmpty( ) )
+                if (!linea.isEmpty())
                 {
-                    String[] productoStr = linea.split( ";" );
-                    String nombreProducto = productoStr[ 0 ];
-                    int costoProducto = Integer.parseInt( productoStr[ 1 ] );
-                    ProductoMenu producto = new ProductoMenu( nombreProducto, costoProducto );
+                    String[] productoStr = linea.split(";");
+                    String nombreProducto = productoStr[0];
+                    int costoProducto = Integer.parseInt(productoStr[1]);
+                    ProductoMenu producto = new ProductoMenu(nombreProducto, costoProducto);
 
-                    for( ProductoMenu prod : this.menuBase )
+                    for (ProductoMenu prod : this.menuBase)
                     {
-                        if( prod.getNombre( ).equals( nombreProducto ) )
+                        if (prod.getNombre().equals(nombreProducto))
                         {
-                            throw new ProductoRepetidoException( nombreProducto );
+                            throw new ProductoRepetidoException(nombreProducto);
                         }
                     }
-                    this.menuBase.add( producto );
+                    this.menuBase.add(producto);
                 }
-                linea = reader.readLine( );
+                linea = reader.readLine();
             }
         }
-        catch( Exception e )
-        {
-            throw e;
-        }
-        finally
-        {
-            reader.close( );
-        }
     }
 
-    private void cargarCombos( File archivoCombos ) throws ProductoRepetidoException, ProductoFaltanteException, IOException
+    private void cargarCombos(File archivoCombos) throws ProductoRepetidoException, ProductoFaltanteException, IOException
     {
-        BufferedReader reader = new BufferedReader( new java.io.FileReader( archivoCombos ) );
-        try
+        try (BufferedReader reader = new BufferedReader(new java.io.FileReader(archivoCombos)))
         {
-            String linea = reader.readLine( );
-            while( linea != null )
+            String linea = reader.readLine();
+            while (linea != null)
             {
-                if( !linea.isEmpty( ) )
+                if (!linea.isEmpty())
                 {
-                    String[] comboStr = linea.split( ";" );
-                    String nombreCombo = comboStr[ 0 ];
-                    double descuento = Double.parseDouble( comboStr[ 1 ].replace( "%", "" ) ) / 100;
+                    String[] comboStr = linea.split(";");
+                    String nombreCombo = comboStr[0];
+                    double descuento = Double.parseDouble(comboStr[1].replace("%", "")) / 100;
 
-                    for( Combo c : this.menuCombos )
+                    for (Combo c : this.menuCombos)
                     {
-                        if( c.getNombre( ).equals( nombreCombo ) )
+                        if (c.getNombre().equals(nombreCombo))
                         {
-                            throw new ProductoRepetidoException( nombreCombo );
+                            throw new ProductoRepetidoException(nombreCombo);
                         }
                     }
 
-                    ArrayList<ProductoMenu> itemsCombo = new ArrayList<>( );
-                    for( int i = 2; i < comboStr.length; i++ )
+                    ArrayList<ProductoMenu> itemsCombo = new ArrayList<>();
+                    for (int i = 2; i < comboStr.length; i++)
                     {
-                        String nombreProducto = comboStr[ i ];
+                        String nombreProducto = comboStr[i];
                         ProductoMenu productoItem = null;
 
                         int index = 0;
                         boolean found = false;
-                        while( index < this.menuBase.size( ) && !found )
+                        while (index < this.menuBase.size() && !found)
                         {
-                            if( this.menuBase.get( index ).getNombre( ).equals( nombreProducto ) )
+                            if (this.menuBase.get(index).getNombre().equals(nombreProducto))
                             {
-                                productoItem = this.menuBase.get( index );
+                                productoItem = this.menuBase.get(index);
                                 found = true;
                             }
                             index++;
                         }
 
-                        if( productoItem == null )
+                        if (productoItem == null)
                         {
-                            throw new ProductoFaltanteException( nombreProducto );
+                            throw new ProductoFaltanteException(nombreProducto);
                         }
 
-                        itemsCombo.add( productoItem );
+                        itemsCombo.add(productoItem);
                     }
 
-                    Combo combo = new Combo( nombreCombo, descuento, itemsCombo );
-                    this.menuCombos.add( combo );
+                    Combo combo = new Combo(nombreCombo, descuento, itemsCombo);
+                    this.menuCombos.add(combo);
                 }
-                linea = reader.readLine( );
+                linea = reader.readLine();
             }
         }
-        catch( Exception e )
-        {
-            throw e;
-        }
-        finally
-        {
-            reader.close( );
-        }
     }
-
 }

@@ -27,13 +27,13 @@ public class ProductoMenu implements Producto
     }
 
     @Override
-    public String getNombre( )
+    public String getNombre()
     {
         return nombre;
     }
 
     @Override
-    public int getPrecio( )
+    public int getPrecio()
     {
         return precioBase;
     }
@@ -44,13 +44,12 @@ public class ProductoMenu implements Producto
      * El texto incluye el nombre del producto y su costo
      */
     @Override
-    public String generarTextoFactura( )
+    public String generarTextoFactura()
     {
-        StringBuffer sb = new StringBuffer( );
-        sb.append( nombre + "\n" );
-        sb.append( "            " + getPrecio( ) + "\n" );
+        StringBuilder sb = new StringBuilder();
+        sb.append(nombre).append("\n");
+        sb.append("            ").append(getPrecio()).append("\n");
 
-        return sb.toString( );
+        return sb.toString();
     }
-
 }

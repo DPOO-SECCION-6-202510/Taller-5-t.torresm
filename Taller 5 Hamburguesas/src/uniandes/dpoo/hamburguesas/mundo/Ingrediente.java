@@ -17,10 +17,10 @@ public class Ingrediente
 
     /**
      * Construye un nuevo ingrediente con un nombre y un costo adicional
-     * @param nombre
-     * @param costoAdicional
+     * @param nombre El nombre del ingrediente
+     * @param costoAdicional El costo adicional de agregar el ingrediente
      */
-    public Ingrediente( String nombre, int costoAdicional )
+    public Ingrediente(String nombre, int costoAdicional)
     {
         this.nombre = nombre;
         this.costoAdicional = costoAdicional;
@@ -28,20 +28,29 @@ public class Ingrediente
 
     /**
      * Retorna el nombre del ingrediente
-     * @return
+     * @return Nombre del ingrediente
      */
-    public String getNombre( )
+    public String getNombre()
     {
         return nombre;
     }
 
     /**
      * Retorna el costo adicional del ingrediente
-     * @return
+     * @return Costo adicional del ingrediente
      */
-    public int getCostoAdicional( )
+    public int getCostoAdicional()
     {
         return costoAdicional;
     }
 
+    /**
+     * Sobrescribe el método toString() para mejorar la visualización del ingrediente
+     * @return Representación en String del ingrediente
+     */
+    @Override
+    public String toString()
+    {
+        return nombre + " ($" + costoAdicional + ")";
+    }
 }
